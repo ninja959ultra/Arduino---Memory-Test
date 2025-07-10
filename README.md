@@ -8,8 +8,8 @@
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 
-byte correctMoves[10];
-byte moves[10];
+byte correctMoves[7];
+byte moves[7];
 
 
 byte blueLED = 2;
@@ -21,10 +21,9 @@ byte buzzer = 6;
 
 byte currentLength = 4;
 byte count = 0;
-byte round = 1;
+byte roundPlaying = 1;
 
 bool checkDone = true;
-bool player_winnig = true
 
 int pinX = A0;
 int pinY = A1;
@@ -86,10 +85,6 @@ void showOrderDirections() {
     delay(1000);
   }
 
-  digitalWrite(blueLED, LOW);
-  digitalWrite(yellowLED, LOW);
-  digitalWrite(redLED, LOW);
-  digitalWrite(whiteLED, LOW);
 }
 
 
@@ -136,7 +131,7 @@ void setup() {
 
 void loop() {
 
-  if (round < 7 && player_winnig == true) {
+  while (roundPlaying < 7 && checkDone == true) {
     showOrderDirections();
 
     while (count < currentLength){
@@ -182,9 +177,10 @@ void loop() {
         noTone(buzzer);
         count++;
       }
-    } // End while loop
+    } // End collect moves
 
 
+    // start check
     for (byte z=0; z<currentLength; z++) {
       if (moves[z] != correctMoves[z]) {
         checkDone = false;
@@ -192,31 +188,48 @@ void loop() {
       }
     }
 
-    if (checkDone){
+
+    if (checkDone){ // correct
       Serial.println("Correct!");
-      delay(3000);
+      correctMoves[currentLength+1] = random(1,5); // Add new move
+      count = 0;
+      currentLength++;
+      roundPlaying++;
+      delay(1000);
     }
 
-    else{
+    else{ // not correct
       Serial.println("Wrong!");
-      player_winnig = false;
-      delay(3000);
     }
 
-
-
-    // Serial.println(xRead);
-    // Serial.println(yRead);
-    Serial.println("End");
     delay(100);
 
   } // End Of rounds
 
-  if (round == 7 && player_winnig == true) {
+
+  if (roundPlaying == 7 && checkDone == true) { // WIN
     winnigScreen();
+
+    while (true) {
+      lcd.clear();
+      lcd.print("You Won! (reset)");
+      delay(10000);
+    }
   }
 
-  else{}
+  else{ // LOSE
+    for (byte time=0; time<3; time++){
+      tone(buzzer, 700);
+      delay(1000);
+      noTone(buzzer);
+    }
+
+    while (true){
+      lcd.clear();
+      lcd.print("Failed! (reset)");
+      delay(10000);
+    }
+  }
 }
 
 ```
