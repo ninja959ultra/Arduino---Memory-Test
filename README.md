@@ -1,6 +1,97 @@
 # Arduino---Memory-Test
 
 
+# Descriptions:
+This project is a memory game built using an Arduino, a joystick, four LEDs (red, yellow, blue, white), a buzzer, and an LCD screen.
+
+When the Start button is pressed, the game begins and a sequence of LED blinks is played.
+The player must memorize the LED pattern and input it correctly using the joystick. The game becomes harder with each round.
+
+---
+
+Joystick Direction Mapping:
+
+This is the fixed color-to-direction mapping used in the joystick (control stick) throughout the game:
+
+Up → Blue LED
+
+Right → Yellow LED
+
+Down → Red LED
+
+Left → White LED
+
+
+This mapping stays the same for the entire gameplay.
+
+---
+
+Game Logic:
+
+The game starts by blinking a random sequence of 4 LEDs.
+
+The player must reproduce the sequence using the joystick.
+
+The LCD screen displays the current round (e.g., "Round 2").
+
+If the player succeeds:
+
+A new random LED is added to the sequence.
+
+The game advances to the next round.
+
+
+The game consists of 4 total rounds.
+
+---
+
+If all 4 rounds are completed correctly:
+
+All LEDs blink together
+
+A victory tone plays
+
+The LCD displays: "You Win!"
+
+---
+
+If the player enters an incorrect direction:
+
+An error tone plays
+
+No LEDs blink
+
+The LCD displays: "Game Over"
+
+---
+
+To restart the game:
+
+Press the Reset button
+
+A new random sequence will be generated
+
+
+This project is great for learning about:
+
+Memory training
+
+Joystick input
+
+Arrays and sequences
+
+Random generation
+
+Visual and audio feedback using LEDs, buzzer, and LCD
+
+
+# Pictures:
+![img1](Arduino_project_memory_test_PART1.jpeg)
+![img2](Arduino_project_memory_test_PART2.jpeg)
+![img3](Arduino_project_memory_test_PART3.jpeg)
+![img4](Arduino_project_memory_test_PART4.jpeg)
+
+
 # Code Below:
 ```cpp
 #include <LiquidCrystal_I2C.h>
