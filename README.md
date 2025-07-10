@@ -132,6 +132,9 @@ void setup() {
 void loop() {
 
   while (roundPlaying < 7 && checkDone == true) {
+    lcd.clear();
+    lcd.print("Round= ");
+    lcd.print(roundPlaying);
     showOrderDirections();
 
     while (count < currentLength){
@@ -191,7 +194,7 @@ void loop() {
 
     if (checkDone){ // correct
       Serial.println("Correct!");
-      correctMoves[currentLength+1] = random(1,5); // Add new move
+      correctMoves[count] = random(1,5); // Add new move
       count = 0;
       currentLength++;
       roundPlaying++;
