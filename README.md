@@ -17,7 +17,10 @@ byte yellowLED = 3;
 byte redLED = 4;
 byte whiteLED = 5;
 byte button = 7;
+byte buzzer = 6;
 byte currentLength = 4;
+byte count = 0;
+bool checkDone = true;
 
 int pinX = A0;
 int pinY = A1;
@@ -35,6 +38,10 @@ void showOrderDirections() {
         digitalWrite(yellowLED, LOW);
         digitalWrite(redLED, LOW);
         digitalWrite(whiteLED, LOW);
+        tone(buzzer, 400);
+        delay(700);
+        noTone(buzzer);
+        digitalWrite(blueLED, LOW);
         break;
 
       case 2:
@@ -42,6 +49,10 @@ void showOrderDirections() {
         digitalWrite(yellowLED, HIGH);
         digitalWrite(redLED, LOW);
         digitalWrite(whiteLED, LOW);
+        tone(buzzer, 500);
+        delay(700);
+        noTone(buzzer);
+        digitalWrite(yellowLED, LOW);
         break;
 
       case 3:
@@ -49,6 +60,10 @@ void showOrderDirections() {
         digitalWrite(yellowLED, LOW);
         digitalWrite(redLED, HIGH);
         digitalWrite(whiteLED, LOW);
+        tone(buzzer, 600);
+        delay(700);
+        noTone(buzzer);
+        digitalWrite(redLED, LOW);
         break;
 
       case 4:
@@ -56,8 +71,13 @@ void showOrderDirections() {
         digitalWrite(yellowLED, LOW);
         digitalWrite(redLED, LOW);
         digitalWrite(whiteLED, HIGH);
+        tone(buzzer, 700);
+        delay(700);
+        noTone(buzzer);
+        digitalWrite(whiteLED, LOW);
         break;
     }
+    
 
     delay(1000);
   }
@@ -76,7 +96,7 @@ void setup() {
   lcd.backlight();
   Serial.begin(9600);
 
-  for (byte i=2; i<6; i++) {
+  for (byte i=2; i<7; i++) {
     pinMode(i, OUTPUT);
   }
 
@@ -89,7 +109,7 @@ void setup() {
   }
 
   for (byte z=0; z<4; z++) {
-    correctMoves[z] = z+1;
+    correctMoves[z] = random(1,5);
   }
 
   lcd.clear();
@@ -97,15 +117,71 @@ void setup() {
 
 
 void loop() {
-  xRead = analogRead(pinX); 
-  yRead = analogRead(pinY); 
 
   showOrderDirections();
+
+  while (count < currentLength){
+    xRead = analogRead(pinX); 
+    yRead = analogRead(pinY);
+
+    if (yRead < 420) {
+      moves[count] = 1; // blue (UP)
+      tone(buzzer, 400);
+      digitalWrite(blueLED, HIGH);
+      delay(700);
+      digitalWrite(blueLED, LOW);
+      noTone(buzzer);
+      count++;
+    }
+
+    if (yRead > 620 ) {
+      moves[count] = 3; // red (DOWN)
+      tone(buzzer, 600);
+      delay(700);
+      noTone(buzzer);
+      count++;
+    }
+
+    if (xRead > 620 ) {
+      moves[count] = 2; // yellow (RIGHT)
+      tone(buzzer, 500);
+      delay(700);
+      noTone(buzzer);
+      count++;
+    }
+
+    if (xRead < 420 ) {
+      moves[count] = 4; // white (LEFT)
+      tone(buzzer, 700);
+      delay(700);
+      noTone(buzzer);
+      count++;
+    }
+  } // End while loop
+
+
+  for (byte z=0; z<currentLength; z++) {
+    if (moves[z] != correctMoves[z]) {
+      checkDone = false;
+      break;
+    }
+  }
+
+  if (checkDone){
+    Serial.println("Correct!");
+    delay(3000);
+  }
+
+  else{
+    Serial.println("Wrong!");
+    delay(3000);
+  }
 
 
   // Serial.println(xRead);
   // Serial.println(yRead);
-  delay(3000);
+  Serial.println("End");
+  delay(100);
 }
 
 ```
