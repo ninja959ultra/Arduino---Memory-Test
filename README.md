@@ -18,9 +18,13 @@ byte redLED = 4;
 byte whiteLED = 5;
 byte button = 7;
 byte buzzer = 6;
+
 byte currentLength = 4;
 byte count = 0;
+byte round = 1;
+
 bool checkDone = true;
+bool player_winnig = true
 
 int pinX = A0;
 int pinY = A1;
@@ -89,6 +93,20 @@ void showOrderDirections() {
 }
 
 
+void winnigScreen() {
+  digitalWrite(redLED, HIGH);
+  digitalWrite(blueLED, HIGH);
+  digitalWrite(yellowLED, HIGH);
+  digitalWrite(whiteLED, HIGH);
+  tone(buzzer, 700);
+  delay(1500);
+  digitalWrite(redLED, LOW);
+  digitalWrite(blueLED, LOW);
+  digitalWrite(yellowLED, LOW);
+  digitalWrite(whiteLED, LOW);
+  noTone(buzzer);
+}
+
 
 void setup() {
   randomSeed(analogRead(A3));
@@ -118,70 +136,87 @@ void setup() {
 
 void loop() {
 
-  showOrderDirections();
+  if (round < 7 && player_winnig == true) {
+    showOrderDirections();
 
-  while (count < currentLength){
-    xRead = analogRead(pinX); 
-    yRead = analogRead(pinY);
+    while (count < currentLength){
+      xRead = analogRead(pinX); 
+      yRead = analogRead(pinY);
 
-    if (yRead < 420) {
-      moves[count] = 1; // blue (UP)
-      tone(buzzer, 400);
-      digitalWrite(blueLED, HIGH);
-      delay(700);
-      digitalWrite(blueLED, LOW);
-      noTone(buzzer);
-      count++;
+      if (yRead < 420) {
+        moves[count] = 1; // blue (UP)
+        tone(buzzer, 400);
+        digitalWrite(blueLED, HIGH);
+        delay(700);
+        digitalWrite(blueLED, LOW);
+        noTone(buzzer);
+        count++;
+      }
+
+      if (yRead > 620 ) {
+        moves[count] = 3; // red (DOWN)
+        tone(buzzer, 600);
+        digitalWrite(redLED, HIGH);
+        delay(700);
+        digitalWrite(redLED, LOW);
+        noTone(buzzer);
+        count++;
+      }
+
+      if (xRead > 620 ) {
+        moves[count] = 2; // yellow (RIGHT)
+        tone(buzzer, 500);
+        digitalWrite(yellowLED, HIGH);
+        delay(700);
+        digitalWrite(yellowLED, LOW);
+        noTone(buzzer);
+        count++;
+      }
+
+      if (xRead < 420 ) {
+        moves[count] = 4; // white (LEFT)
+        tone(buzzer, 700);
+        digitalWrite(whiteLED, HIGH);
+        delay(700);
+        digitalWrite(whiteLED, LOW);
+        noTone(buzzer);
+        count++;
+      }
+    } // End while loop
+
+
+    for (byte z=0; z<currentLength; z++) {
+      if (moves[z] != correctMoves[z]) {
+        checkDone = false;
+        break;
+      }
     }
 
-    if (yRead > 620 ) {
-      moves[count] = 3; // red (DOWN)
-      tone(buzzer, 600);
-      delay(700);
-      noTone(buzzer);
-      count++;
+    if (checkDone){
+      Serial.println("Correct!");
+      delay(3000);
     }
 
-    if (xRead > 620 ) {
-      moves[count] = 2; // yellow (RIGHT)
-      tone(buzzer, 500);
-      delay(700);
-      noTone(buzzer);
-      count++;
+    else{
+      Serial.println("Wrong!");
+      player_winnig = false;
+      delay(3000);
     }
 
-    if (xRead < 420 ) {
-      moves[count] = 4; // white (LEFT)
-      tone(buzzer, 700);
-      delay(700);
-      noTone(buzzer);
-      count++;
-    }
-  } // End while loop
 
 
-  for (byte z=0; z<currentLength; z++) {
-    if (moves[z] != correctMoves[z]) {
-      checkDone = false;
-      break;
-    }
+    // Serial.println(xRead);
+    // Serial.println(yRead);
+    Serial.println("End");
+    delay(100);
+
+  } // End Of rounds
+
+  if (round == 7 && player_winnig == true) {
+    winnigScreen();
   }
 
-  if (checkDone){
-    Serial.println("Correct!");
-    delay(3000);
-  }
-
-  else{
-    Serial.println("Wrong!");
-    delay(3000);
-  }
-
-
-  // Serial.println(xRead);
-  // Serial.println(yRead);
-  Serial.println("End");
-  delay(100);
+  else{}
 }
 
 ```
