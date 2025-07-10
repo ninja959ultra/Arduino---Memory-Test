@@ -25,7 +25,48 @@ int pinY = A1;
 int xRead, yRead;
 
 
+void showOrderDirections() {
+  for (byte i=0; i<currentLength; i++) {
+    byte move = correctMoves[i];
 
+    switch (move) {
+      case 1:
+        digitalWrite(blueLED, HIGH);
+        digitalWrite(yellowLED, LOW);
+        digitalWrite(redLED, LOW);
+        digitalWrite(whiteLED, LOW);
+        break;
+
+      case 2:
+        digitalWrite(blueLED, LOW);
+        digitalWrite(yellowLED, HIGH);
+        digitalWrite(redLED, LOW);
+        digitalWrite(whiteLED, LOW);
+        break;
+
+      case 3:
+        digitalWrite(blueLED, LOW);
+        digitalWrite(yellowLED, LOW);
+        digitalWrite(redLED, HIGH);
+        digitalWrite(whiteLED, LOW);
+        break;
+
+      case 4:
+        digitalWrite(blueLED, LOW);
+        digitalWrite(yellowLED, LOW);
+        digitalWrite(redLED, LOW);
+        digitalWrite(whiteLED, HIGH);
+        break;
+    }
+
+    delay(1000);
+  }
+
+  digitalWrite(blueLED, LOW);
+  digitalWrite(yellowLED, LOW);
+  digitalWrite(redLED, LOW);
+  digitalWrite(whiteLED, LOW);
+}
 
 
 
@@ -59,10 +100,12 @@ void loop() {
   xRead = analogRead(pinX); 
   yRead = analogRead(pinY); 
 
+  showOrderDirections();
+
 
   // Serial.println(xRead);
   // Serial.println(yRead);
-  delay(100);
+  delay(3000);
 }
 
 ```
