@@ -13,13 +13,13 @@ Joystick Direction Mapping:
 
 This is the fixed color-to-direction mapping used in the joystick (control stick) throughout the game:
 
-Up → Blue LED
+Up ---> Blue LED
 
-Right → Yellow LED
+Right ---> Yellow LED
 
-Down → Red LED
+Down ---> Red LED
 
-Left → White LED
+Left ---> White LED
 
 
 This mapping stays the same for the entire gameplay.
