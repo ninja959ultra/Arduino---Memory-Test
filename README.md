@@ -71,6 +71,7 @@ Press the Reset button
 
 A new random sequence will be generated
 
+---
 
 This project is great for learning about:
 
