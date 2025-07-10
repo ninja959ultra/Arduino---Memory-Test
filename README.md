@@ -32,7 +32,7 @@ The game starts by blinking a random sequence of 4 LEDs.
 
 The player must reproduce the sequence using the joystick.
 
-The LCD screen displays the current round (e.g., "Round 2").
+The LCD screen displays the current round (EX: "Round 2 Of 4").
 
 If the player succeeds:
 
