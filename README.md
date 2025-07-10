@@ -8,8 +8,8 @@
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 
-byte correctMoves[7];
-byte moves[7];
+byte correctMoves[15];
+byte moves[15];
 
 
 byte blueLED = 2;
@@ -38,9 +38,6 @@ void showOrderDirections() {
     switch (move) {
       case 1:
         digitalWrite(blueLED, HIGH);
-        digitalWrite(yellowLED, LOW);
-        digitalWrite(redLED, LOW);
-        digitalWrite(whiteLED, LOW);
         tone(buzzer, 400);
         delay(700);
         noTone(buzzer);
@@ -48,10 +45,7 @@ void showOrderDirections() {
         break;
 
       case 2:
-        digitalWrite(blueLED, LOW);
         digitalWrite(yellowLED, HIGH);
-        digitalWrite(redLED, LOW);
-        digitalWrite(whiteLED, LOW);
         tone(buzzer, 500);
         delay(700);
         noTone(buzzer);
@@ -59,10 +53,7 @@ void showOrderDirections() {
         break;
 
       case 3:
-        digitalWrite(blueLED, LOW);
-        digitalWrite(yellowLED, LOW);
         digitalWrite(redLED, HIGH);
-        digitalWrite(whiteLED, LOW);
         tone(buzzer, 600);
         delay(700);
         noTone(buzzer);
@@ -70,9 +61,6 @@ void showOrderDirections() {
         break;
 
       case 4:
-        digitalWrite(blueLED, LOW);
-        digitalWrite(yellowLED, LOW);
-        digitalWrite(redLED, LOW);
         digitalWrite(whiteLED, HIGH);
         tone(buzzer, 700);
         delay(700);
@@ -131,10 +119,11 @@ void setup() {
 
 void loop() {
 
-  while (roundPlaying < 7 && checkDone == true) {
+  while (roundPlaying < 5 && checkDone == true) {
     lcd.clear();
     lcd.print("Round= ");
     lcd.print(roundPlaying);
+    lcd.print(" Of 4");
     showOrderDirections();
 
     while (count < currentLength){
@@ -210,7 +199,7 @@ void loop() {
   } // End Of rounds
 
 
-  if (roundPlaying == 7 && checkDone == true) { // WIN
+  if (roundPlaying == 5 && checkDone == true) { // WIN
     winnigScreen();
 
     while (true) {
