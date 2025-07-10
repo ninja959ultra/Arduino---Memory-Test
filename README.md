@@ -51,7 +51,7 @@ All LEDs blink together
 
 A victory tone plays
 
-The LCD displays: "You Win!"
+The LCD displays: "You Won!"
 
 ---
 
@@ -61,7 +61,7 @@ An error tone plays
 
 No LEDs blink
 
-The LCD displays: "Game Over"
+The LCD displays: "Failed"
 
 ---
 
